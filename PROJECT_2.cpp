@@ -72,7 +72,7 @@ int main(int argc,char * argv[]){
     input_name.erase(input_name.begin()+i,input_name.end());
     how_many_points=stoi(input_name);
     std::string line;
-    std::ifstream poly("PROJECT/output.txt");
+    std::ifstream poly("test_output.txt");
     std::getline(poly, line); //skip first line
     i=0;
     char * temp;
