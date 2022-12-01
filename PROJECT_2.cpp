@@ -23,7 +23,7 @@ typedef std::vector<int> Areas;
 
 int main(int argc,char * argv[]){
     Polygon_2 p;
-
+    segments chain; 
 
     std::ifstream in(argv[2]); // input file
     std::ofstream outfile;
@@ -79,15 +79,30 @@ int main(int argc,char * argv[]){
     int pos;
     int x;
     int y;
+    std::string sub1;
+    std::string sub2;
     while(i<how_many_points){   //extracting the points of the polygon from my output and making the polygon we will use
         std::getline(poly,line);
         pos = line.find(" ");
-        std::string sub1 = line.substr(0 , pos);
-        std::string sub2 = line.substr(pos + 1);
+        sub1 = line.substr(0 , pos);
+        sub2 = line.substr(pos + 1);
         x=stoi(sub1);
         y=stoi(sub2);
         p.push_back(Point_2(x,y));
         i++;
     }
-
+    i=0;
+    std::string sub3;
+    std::string sub4;
+    int x1;
+    int y1;
+    while(i<how_many_points){
+        chain.push_back(Segment_2(p[i],p[i+1]));
+        if(i==how_many_points-2){
+            break;
+        }
+    i++;
+    }
+    chain.push_back(Segment_2(p[i+1],p[0])); //made the segments of the polygon
+    
 }
