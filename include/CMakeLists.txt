@@ -1,0 +1,1 @@
+add_library(Area_maximization_minimization Area_maximization_minimization.cpp)
