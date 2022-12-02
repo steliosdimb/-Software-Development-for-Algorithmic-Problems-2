@@ -1,0 +1,6 @@
+/home/panagiotis/Desktop/Project-Emiris-2/-Software-Development-for-Algorithmic-Problems-2/CMakeFiles/rebuild_cache.dir
+/home/panagiotis/Desktop/Project-Emiris-2/-Software-Development-for-Algorithmic-Problems-2/CMakeFiles/edit_cache.dir
+/home/panagiotis/Desktop/Project-Emiris-2/-Software-Development-for-Algorithmic-Problems-2/CMakeFiles/PROJECT_2.dir
+/home/panagiotis/Desktop/Project-Emiris-2/-Software-Development-for-Algorithmic-Problems-2/include/CMakeFiles/rebuild_cache.dir
+/home/panagiotis/Desktop/Project-Emiris-2/-Software-Development-for-Algorithmic-Problems-2/include/CMakeFiles/edit_cache.dir
+/home/panagiotis/Desktop/Project-Emiris-2/-Software-Development-for-Algorithmic-Problems-2/include/CMakeFiles/Area_maximization_minimization.dir

@@ -1,0 +1,2 @@
+/usr/bin/ar qc libArea_maximization_minimization.a  CMakeFiles/Area_maximization_minimization.dir/Area_maximization_minimization.cpp.o
+/usr/bin/ranlib libArea_maximization_minimization.a

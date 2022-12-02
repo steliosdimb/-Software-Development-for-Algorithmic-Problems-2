@@ -1,0 +1,22 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/panagiotis/Desktop/Project-Emiris-2/-Software-Development-for-Algorithmic-Problems-2/include/Area_maximization_minimization.cpp
+Area_maximization_minimization.hpp
+/home/panagiotis/Desktop/Project-Emiris-2/-Software-Development-for-Algorithmic-Problems-2/include/Area_maximization_minimization.hpp
+
+/home/panagiotis/Desktop/Project-Emiris-2/-Software-Development-for-Algorithmic-Problems-2/include/Area_maximization_minimization.hpp
+cstdlib
+-
+CGAL/Exact_predicates_inexact_constructions_kernel.h
+-
+CGAL/Polygon_2.h
+-
+CGAL/convex_hull_2.h
+-
+

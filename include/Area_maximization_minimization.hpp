@@ -12,6 +12,8 @@ typedef std::vector<Point_2> Points;                    // vector me stoixeia po
 typedef std::vector<Segment_2> segments;                // vector me stoixeia pleurwn
 typedef std::vector<int> Areas;
 
+///
+
 
 extern int flag_algo;    // algorithm we choose
 extern int flag_min_max; // minimization or maximixation
