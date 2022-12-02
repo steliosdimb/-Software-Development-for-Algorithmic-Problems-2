@@ -60,6 +60,7 @@ int main(int argc,char * argv[]){
         flag_min_max=2; //if -max
     }
     std::string input_name = std::string(argv[2]);  //finding how many points we have
+
     while(input_name.at(0)<'1' || input_name.at(0)>'9'){
         input_name.erase(input_name.begin());
 
@@ -104,5 +105,15 @@ int main(int argc,char * argv[]){
     i++;
     }
     chain.push_back(Segment_2(p[i+1],p[0])); //made the segments of the polygon
+    if(flag_algo==1){//if algorithm is local search
     
+    //pana
+
+    }
+    else if(flag_algo==2){//if algorithm is simulated_annealing
+
+    //stelios
+    //pana
+
+    }
 }
