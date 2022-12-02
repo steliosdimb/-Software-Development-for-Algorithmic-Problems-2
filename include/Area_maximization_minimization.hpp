@@ -1,6 +1,9 @@
 #include <cstdlib>
 #include <CGAL/Exact_predicates_inexact_constructions_kernel.h>
 #include <CGAL/Polygon_2.h>
+#include <CGAL/Kd_tree.h>
+#include <CGAL/Fuzzy_iso_box.h>
+#include <CGAL/Search_traits_2.h>
 #include <CGAL/convex_hull_2.h>
 
 
@@ -12,6 +15,9 @@ typedef std::vector<Point_2> Points;                    // vector me stoixeia po
 typedef std::vector<Segment_2> segments;                // vector me stoixeia pleurwn
 typedef std::vector<int> Areas;
 
+typedef CGAL::Search_traits_2<K> T;
+typedef CGAL::Fuzzy_iso_box<T> box;
+typedef CGAL::Kd_tree<T> tree;
 
 extern int flag_algo;    // algorithm we choose
 extern int flag_min_max; // minimization or maximixation
@@ -20,9 +26,12 @@ extern int L;            // path length
 extern double threshold; // threshold
 extern Polygon_2 p; // polygon
 extern segments chain;  // chain
- 
+extern Points points;   // points
+
+
 void handle_input(char **);
 int create_polygon(char *);
 void create_chain(int);
+void get_points(int);
 void local_search(void);
-void simulated_annealing(void);
+void simulated_annealing(int);
