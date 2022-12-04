@@ -5,15 +5,15 @@
 #include <CGAL/Polygon_2_algorithms.h>
 #include <CGAL/Search_traits_2.h>
 #include <CGAL/Fuzzy_iso_box.h>
+#include <CGAL/draw_polygon_2.h>
 #include "include/Area_maximization_minimization.hpp"
 #include <cstdlib>
+#include <time.h>
 #include <fstream>
 #include <sstream>
 #include <iostream>
 #include <vector>
 #include <string>
-
-
 
 typedef CGAL::Exact_predicates_inexact_constructions_kernel K;
 typedef K::Point_2 Point_2; //Point_2 object
@@ -42,13 +42,16 @@ int main(int argc,char * argv[]){
     get_points(how_many_points);
     create_chain(how_many_points);
     if(flag_algo==1){//if algorithm is local search
-    
+        
         local_search();
 
     }
     else if(flag_algo==2){//if algorithm is simulated_annealing
+                            CGAL::draw(p);
 
         simulated_annealing(how_many_points);
 
     }
+                    CGAL::draw(p);
+
 }

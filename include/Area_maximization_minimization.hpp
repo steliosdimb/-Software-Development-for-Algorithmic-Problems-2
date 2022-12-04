@@ -5,7 +5,9 @@
 #include <CGAL/Fuzzy_iso_box.h>
 #include <CGAL/Search_traits_2.h>
 #include <CGAL/convex_hull_2.h>
+#include <CGAL/draw_polygon_2.h>
 
+#include <time.h>
 
 typedef CGAL::Exact_predicates_inexact_constructions_kernel K;
 typedef K::Point_2 Point_2;     // antikeimeno tupou point
@@ -35,3 +37,4 @@ void create_chain(int);
 void get_points(int);
 void local_search(void);
 void simulated_annealing(int);
+int find_intersection(Segment_2,Segment_2,Segment_2);
