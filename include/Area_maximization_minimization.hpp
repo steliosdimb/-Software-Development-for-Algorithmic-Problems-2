@@ -38,3 +38,6 @@ void get_points(int);
 void local_search(void);
 void simulated_annealing(int);
 int find_intersection(Segment_2,Segment_2,Segment_2);
+int find_intersection_1(Segment_2,Segment_2);
+void create_new_polygon(void);
+int find_intersection_2(Segment_2);
