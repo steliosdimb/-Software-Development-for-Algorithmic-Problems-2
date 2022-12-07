@@ -4,5 +4,5 @@
 2. make
 
 
-3. ./PROJECT_2 -i uniform-0000015-1.instance -o output.txt -algorithm local_search -L 13 -max -threshold 33.3
+3. ./PROJECT_2 -i uniform-0000100-1.instance -o output.txt -algorithm simulated_annealing -L 500 -max -annealing subdivision ./PROJECT -i uniform-0000100-1.instance -o test_output.txt -algorithm incremental -edge_selection 1 -init 1a
 
