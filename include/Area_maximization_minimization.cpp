@@ -183,7 +183,7 @@ void simulated_annealing(int how_many_points,std::ofstream& outp)
   
   if (flag_min_max == 1)
   {                                                                        // min
-    previous_energy = how_many_points * (polygon_area / convex_hull_area); // finding initial energy for minimization
+    previous_energy = how_many_points * (abs(polygon_area) / abs(convex_hull_area)); // finding initial energy for minimization
     if (option == 1)
     {
       polygon_area2 = sa_local(previous_energy, how_many_points);
@@ -199,7 +199,7 @@ void simulated_annealing(int how_many_points,std::ofstream& outp)
   }
   else if (flag_min_max == 2)
   {                                                                              // max
-    previous_energy = how_many_points * (1 - (polygon_area / convex_hull_area)); // finding energy for maximization
+    previous_energy = how_many_points * (1 - (abs(polygon_area) / abs(convex_hull_area))); // finding energy for maximization
     if (option == 1)
     { // local
       polygon_area2=sa_local(previous_energy, how_many_points);
@@ -1723,12 +1723,12 @@ double sa_local(double previous_energy, int how_many_points)
     if (flag_min_max == 1)
     {
       // if min
-      sequent_energy = how_many_points * (polygon_area / convex_hull_area);
+      sequent_energy = how_many_points * (abs(polygon_area) / abs(convex_hull_area));
     }
     else if(flag_min_max==2)
     {
       // if max
-      sequent_energy = how_many_points * (1 - (polygon_area / convex_hull_area)); // new energy
+      sequent_energy = how_many_points * (1 - (abs(polygon_area) / abs(convex_hull_area))); // new energy
     }
     DE = sequent_energy - previous_energy; // DE
     metropolis_criterion = exp(-DE / temperature);
@@ -1875,12 +1875,12 @@ double sa_global(double previous_energy, int how_many_points)
     if (flag_min_max == 1)
     {
       // if min
-      sequent_energy = how_many_points * (polygon_area / convex_hull_area);
+      sequent_energy = how_many_points * (abs(polygon_area) / abs(convex_hull_area));
     }
     else if(flag_min_max==2)
     {
       // if max
-      sequent_energy = how_many_points * (1 - (polygon_area / convex_hull_area)); // new energy
+      sequent_energy = how_many_points * (1 - (abs(polygon_area )/ abs(convex_hull_area))); // new energy
     }
     DE = sequent_energy - previous_energy; // DE
     metropolis_criterion = exp(-DE / temperature);
@@ -2072,17 +2072,17 @@ void sa_subdiv(int how_many_points)
     CGAL::area_2(polygon_v[i].begin(), polygon_v[i].end(), polygon_area, K());                                       // compute polygons area
     if(flag_min_max==1){
       //min
-      previous_energy = polygon_v[i].size() * (polygon_area / convex_hull_area); // finding initial energy for minimization
+      previous_energy = polygon_v[i].size() * (abs(polygon_area) / abs(convex_hull_area)); // finding initial energy for minimization
     }
     else{
-      previous_energy = polygon_v[i].size() * (1 - (polygon_area / convex_hull_area)); // finding energy for maximization
+      previous_energy = polygon_v[i].size() * (1 - (abs(polygon_area) / abs(convex_hull_area))); // finding energy for maximization
     }
     for(j=0;j<polygon_v[i].size();j++){
       p.push_back(polygon_v[i][j]);
     }
     create_chain(polygon_v[i].size());
-    std::cout << previous_energy << std::endl;
-    sa_global(previous_energy,polygon_v[i].size());
+    std::cout << abs(previous_energy) << std::endl;
+    sa_global(abs(previous_energy),polygon_v[i].size());
     polygon_sorted_v.push_back(p);//store the minimized/maximized polygon
     p.clear();
     chain.clear();
