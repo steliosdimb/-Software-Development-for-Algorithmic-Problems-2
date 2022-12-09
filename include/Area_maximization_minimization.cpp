@@ -69,7 +69,9 @@ void handle_input(char **argv)
 int create_polygon(char *arg)
 {
   int how_many_points;
-  std::string input_name = std::string(arg); // finding how many points we have
+  
+  std::string input_name ;
+  input_name.assign(arg, arg + 24);// finding how many points we have
   while (input_name.at(0) < '1' || input_name.at(0) > '9')
   {
     input_name.erase(input_name.begin());
@@ -2138,4 +2140,345 @@ void print_result(int how_many_points,double convex_hull_area,double polygon_are
   outf << "area: " << abs(polygon_area_2) << std::endl;
   outf << "ratio initial: " << abs(polygon_area_1)/abs(convex_hull_area) << std::endl;
   outf << "ratio: " << abs(polygon_area_2)/abs(convex_hull_area) << std::endl;
+}
+segments local_search(int min_or_max,std::ofstream& outf){
+    
+    double convex_hull_area;
+    double polygon_area;
+    double temp_area;
+    double DA = 100;  
+    List la;
+    List li; 
+    List lj;
+    
+    Points temp_points;
+    Points tp;
+    Points convex_hull_points;
+    Polygon_2 temp_polygon; // keeps a temp polygon
+
+    std::vector<Segment_2>::iterator seg_it;
+    
+    segments tchain;
+
+    std::copy(chain.begin(), chain.end(), std::back_inserter(tchain)); //copy initial chain
+
+    for(int i=0; i<p.size(); i++){
+        temp_polygon.push_back(p[i]);               //copy initial polygon
+    }
+
+
+    CGAL::convex_hull_2(p.begin(), p.end(), std::back_inserter(convex_hull_points)); 
+
+    std::copy(p.begin(), p.end(), std::back_inserter(temp_points));
+
+    std::copy(p.begin(), p.end(), std::back_inserter(tp));
+
+    CGAL::area_2(convex_hull_points.begin(), convex_hull_points.end(), convex_hull_area, K()); // compute convex hull area
+    
+    CGAL::area_2(tp.begin(), tp.end(), temp_area, K());                                       // compute polygons area
+    double area_before=temp_area;
+    double conv_area=convex_hull_area;
+    while(DA >= threshold){
+        for(int j=0; j<tchain.size(); j++){
+            int k=1;
+            while(k<=L){
+                for(int i=0; i< tp.size(); i++){
+                        if(k==1){
+                            if(!point_of_segment(tchain[j], tp[i])){              //if the selected point is not part of the edge
+                                if(!find_blue_edge(Segment_2(tp[i], tchain[j][0]), temp_points, tchain, 0) || edge_exists(tp[i], tchain[j][0], tchain)!=error){    //if the edge from p[i] to chain[j][0] is visible
+                                    if(!find_blue_edge(Segment_2(tp[i], tchain[j][1]), temp_points, tchain, 0) || edge_exists(tp[i], tchain[j][1], tchain)!=error){    //if the edge is visible                                          
+                                        if(i==0){       
+                                                                    //if the edge from the two vertices intersects with the polygon
+                                            if(!find_blue_edge(Segment_2(tp[i+1], tp[tp.size()-1]), temp_points, tchain, 0)){     //if new edge from the two vertices of the v is not intersecting
+                                                int a = construct_polygon(i, j, tp[i], tchain[j], tchain, temp_area, min_or_max,1);
+                                                if(a!=-1){
+                                                    li.push_back(i);
+                                                    lj.push_back(j);
+                                                    la.push_back(a);
+                                                }
+                                            }
+                                        }
+                                        if(i==tp.size()-1){    //if the edge from the two vertices intersects with the polygon
+                                            if(!find_blue_edge(Segment_2(tp[0], tp[tp.size()-2]), temp_points, tchain, 0)){
+                                                int a = construct_polygon(i, j, tp[i], tchain[j], tchain, temp_area, min_or_max,1);
+                                                if(a!=-1){
+                                                    li.push_back(i);
+                                                    lj.push_back(j);
+                                                    la.push_back(a);
+                                                }
+                                            }
+                                        }
+                                        else{
+                                            if(!find_blue_edge(Segment_2(tp[i-1],tp[i+1]), temp_points, tchain, 0)){
+                                                int a=construct_polygon(i, j, tp[i], tchain[j], tchain, temp_area, min_or_max,1);
+                                                if(a!=-1){
+                                                    li.push_back(i);
+                                                    lj.push_back(j);
+                                                    la.push_back(a);
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
+                         /*                 L > 1 
+                        else{
+                            if(i==0){
+                                bool belongs = false; 
+                                for(int bl=0; bl<k; bl++ ){    //check if any points of v belongs to chain[j]
+                                    if(point_of_segment(tchain[j], tp[i+bl])){
+                                        bl = true;
+                                        break;
+                                    }
+                                }
+                                
+                                if(belongs==false){     //if none of the points of v belongs to chain[j]
+                                     if(!find_blue_edge(Segment_2(tp[i], tchain[j][0]), temp_points, tchain, 0) || edge_exists(tp[i], tchain[j][0], tchain)!=error){
+                                        if(!find_blue_edge(Segment_2(tp[i+k-1], tchain[j][1]), temp_points, tchain, 0) || edge_exists(tp[i+k-1], tchain[j][1], tchain)!=error){    //if the edge is visible 
+                                            if(!find_blue_edge(Segment_2(tp[i+k], tp[tp.size()-1]), temp_points, tchain, 0)){
+                                                // int a = construct_polygon(i, j, tp[i], tchain[j], tchain, temp_area, min_or_max,k);
+                                                // if(a!=-1){
+                                                //     li.push_back(i);
+                                                //     lj.push_back(j);
+                                                //     la.push_back(a);
+                                                // }
+                                            }
+                                        }
+                                    }   
+                                }
+                            }
+
+                            else if(i+k<tp.size()){
+                                bool belongs = false; 
+                                for(int bl=0; bl<k; bl++ ){    //check if any points of v belongs to chain[j]
+                                    if(i+bl<tp.size()){
+                                        if(point_of_segment(tchain[j], tp[i+bl])){
+                                            bl = true;
+                                            break;
+                                        }
+                                    else{
+                                        if(point_of_segment(tchain[j], tp[k-bl-1])){
+                                            bl = true;
+                                            break;
+                                            }
+                                        }
+                                    }
+                                }
+
+                                if(belongs == false){
+
+                                    ///////////
+                                
+                                }
+                            }
+                        }*/
+                    }
+                k++;
+            }
+
+        }
+           
+            if(la.size()==0){
+                break;
+            }
+            else
+            {
+
+                int a=-1;
+                int pos;
+                for(int i=0; i<la.size(); i++){
+                    if(a<la[i]){
+                        a=la[i];
+                        pos = i;
+                    }
+                }
+                segments chain2;
+                chain2 = final_polygon(li[pos], lj[pos], tp[li[pos]], tchain[lj[pos]], tchain);
+                tchain.clear();
+                tp.clear();
+
+                std::copy(chain2.begin(), chain2.end(), std::back_inserter(tchain));
+                
+                temp_polygon.clear();
+                int e = 0;
+                temp_polygon.push_back(tchain[e][0]); // initialize the new polygon
+                tp.push_back(tchain[e][0]);
+                temp_polygon.push_back(tchain[e][1]);
+                tp.push_back(tchain[e][1]);            
+                e++;
+                while (e < tchain.size() - 1)
+                {   
+                    temp_polygon.push_back(tchain[e][1]);
+                    tp.push_back(tchain[e][1]);
+                    e++;
+                }
+                double re; 
+                CGAL::area_2(temp_polygon.begin(), temp_polygon.end(), re, K());                                       // compute polygons area
+                DA = re - temp_area;   //check the threshold
+                temp_area = re;   //assign new area  
+                la.clear();
+                li.clear();
+                lj.clear();
+            }
+        }
+        p.clear();
+        int x;
+        p.push_back(tchain[0][0]);
+        for (x = 0; x < tchain.size() - 1; x++)
+        {
+            p.push_back(tchain[x][1]);
+        }
+        chain.clear();
+        create_chain(p.size());
+        print_result(p.size(), conv_area, area_before, temp_area, outf);
+        return tchain;
+}
+
+int construct_polygon(int i, int j, Point_2 v, Segment_2 u, segments tchain, int polygon_area, int min_or_max, int l){
+    segments temp; 
+    Polygon_2 t_p;
+    int pos;
+    std::copy(tchain.begin(), tchain.end(), std::back_inserter(temp));   //copy chain
+    if(l==1){
+        temp.erase(temp.begin()+j);
+        temp.insert(temp.begin()+j, Segment_2(u[0], v));
+        temp.insert(temp.begin()+j+1, Segment_2(v, u[1]));
+    }
+
+    for(int i=0; i<tchain.size(); i++){
+        if(tchain[i][0]==v){
+            pos=i;
+            break; 
+        }
+    }
+
+    int ind = pos;
+
+    temp.erase(temp.begin()+ind);
+
+    if(i!=0) {
+        temp.erase(temp.begin()+ind);
+        temp.insert(temp.begin()+ind, Segment_2(tchain[ind-1][0],tchain[0][1]));
+    }
+    else if(i==(tchain.size()-1)){
+        temp.erase(temp.begin()+ind);
+        temp.insert(temp.begin()+ind, Segment_2(tchain[ind-1][0], tchain[0][0]));
+    }
+    else{
+        temp.erase(temp.begin()+tchain.size()-1);
+        temp.insert(temp.begin(), Segment_2(tchain[tchain.size()-1][0],tchain[ind][1]));
+    }
+
+    int e=0; 
+
+    t_p.push_back(temp[e][0]);    //create temp polygon from chain
+    t_p.push_back(temp[e][1]);
+    e++;
+    while(e<temp.size()-1){
+        t_p.push_back(temp[e][1]);
+        e++;
+    }
+
+    if(t_p.is_simple()){    //if the newly created polygon is simple
+        double temp_area;
+        CGAL::area_2(t_p.begin(), t_p.end(), temp_area, K());
+        if(min_or_max==2){                                      //for max polygon
+            if(temp_area>polygon_area){
+            return temp_area;
+            }
+        }
+        else if(min_or_max==1){                                 //for min polygon
+            if(temp_area<polygon_area){
+            return temp_area;
+            }
+        }
+    }
+    t_p.clear(); 
+    temp.clear();
+    return -1;
+}
+
+
+segments final_polygon(int i, int j, Point_2 v, Segment_2 u, segments tchain){   //constructs new polygon and returns its segments 
+    segments temp; 
+    Polygon_2 t_p;
+    int pos;
+
+    std::copy(tchain.begin(), tchain.end(), std::back_inserter(temp));   //copy chain
+
+    temp.erase(temp.begin()+ j);
+    temp.insert(temp.begin()+j, Segment_2(u[0], v));
+    temp.insert(temp.begin()+j+1, Segment_2(v, u[1]));
+
+    for(int i=0; i<tchain.size(); i++){
+        if(tchain[i][0]==v){
+            pos=i;
+            break; 
+        }
+    }
+    int ind = pos;
+
+    temp.erase(temp.begin()+ind);
+    if(i!=0) {   //if we didnt pick the first vertex of the polygon chain
+        temp.erase(temp.begin()+ind);
+        temp.insert(temp.begin()+ind, Segment_2(tchain[ind-1][0],tchain[0][1]));
+    }
+    else{
+        temp.erase(temp.begin()+tchain.size()-1);
+        temp.insert(temp.begin(), Segment_2(tchain[tchain.size()-1][0],tchain[ind][1]));
+    }
+    return temp;
+}
+
+
+int find_blue_edge(Segment_2 k, Points convex_hull, segments tchain, int mid){
+    int flag;
+    int counter=0; 
+    for(int i=0; i< tchain.size(); i++){
+        auto result = CGAL::intersection(k, tchain[i]);
+        if(result)
+            {
+            if (const Segment_2 *s = boost::get<Segment_2>(&*result))
+            {
+              flag = 1;
+              counter++;
+              break;
+            }
+            else
+            {
+              Point_2 *p = boost::get<Point_2>(&*result);
+              if (std::find(convex_hull.begin(), convex_hull.end(), *p) != convex_hull.end() && mid==0) //check if p is an edge of the chain
+              {
+                flag = 0;
+              }
+              else if(mid == 1 && *p == k[1]){   //if we check the middle point of a segment the only point of intersection between that and the new point should be only itself
+                flag=0;
+              }
+              else
+                {
+                flag = 1;
+                counter++;
+                break;
+                }
+              }
+            }
+
+    }
+    return counter == 0 ? 0 : 1;
+    
+}
+
+
+
+bool point_of_segment(Segment_2 s, Point_2 p){    //returns if a point belongs to edge
+    if(s[1]==p){
+        return true;
+    }
+    else if(s[0]==p){
+        return true;
+    }
+    else 
+        return false;
 }
