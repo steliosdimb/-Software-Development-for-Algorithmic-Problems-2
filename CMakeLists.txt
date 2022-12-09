@@ -9,7 +9,6 @@ project( PROJECT_2 )
 # CGAL and its components
 
 find_package( CGAL QUIET COMPONENTS  )
-find_package(CGAL REQUIRED OPTIONAL_COMPONENTS Qt5)
 
 
 if ( NOT CGAL_FOUND )
@@ -46,10 +45,6 @@ add_executable( PROJECT_2 PROJECT_2.cpp )
 add_to_cached_list( CGAL_EXECUTABLE_TARGETS PROJECT_2 )
 
 # Link the executable to CGAL and third-party libraries
-if(CGAL_Qt5_FOUND)
-  #link it with the required CGAL libraries
-  target_link_libraries(PROJECT_2 PUBLIC CGAL::CGAL_Basic_viewer)
 
-endif()
 target_link_libraries(PROJECT_2 PRIVATE CGAL::CGAL ${EXTRA_LIBS})
 
