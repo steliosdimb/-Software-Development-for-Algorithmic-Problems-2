@@ -40,13 +40,13 @@ typedef std::vector<Point_2>::iterator pveciterator;  // iterator gia vector apo
 typedef std::vector<Segment_2>::iterator segiterator; // iterator gia segments
 typedef std::vector<double> distance;  
 typedef std::vector<Polygon_2> Polygon_v; // vector with Polygon_2 objects
-
+typedef std::vector<int> List;
 
 void handle_input(char **);
 int create_polygon(char *);
 void create_chain(int);
 void get_points(int);
-void local_search(void);
+segments local_search(int min_max,std::ofstream&);
 void simulated_annealing(int,std::ofstream&);
 int find_intersection(Segment_2,Segment_2,Segment_2);
 int find_intersection_1(Segment_2,Segment_2);
@@ -86,3 +86,7 @@ segments incremental(Points , Points , segments, segments );
 Segment_2 edge_exists(Point_2 , Point_2 , segments );
 segments create_segments(Points );
 int find_red_segments(Segment_2 , Points , segments , int );
+int construct_polygon(int i, int j, Point_2 v, Segment_2 u, segments chain, int polygon_area, int min_or_max, int l);
+segments final_polygon(int i, int j, Point_2 v, Segment_2 u, segments chain);
+int find_blue_edge(Segment_2 k, Points convex_hull, segments chain, int mid);
+bool point_of_segment(Segment_2 s, Point_2 p);
