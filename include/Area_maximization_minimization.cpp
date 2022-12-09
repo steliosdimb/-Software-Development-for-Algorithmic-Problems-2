@@ -2134,8 +2134,8 @@ void print_result(int how_many_points,double convex_hull_area,double polygon_are
   else{
     outf << "max" << std::endl;
   }
-  outf << "area initial: " << polygon_area_1 << std::endl;
-  outf << "area: " << polygon_area_2 << std::endl;
-  outf << "ratio initial: " << polygon_area_1/convex_hull_area << std::endl;
-  outf << "ratio: " << polygon_area_2/convex_hull_area << std::endl;
+  outf << "area initial: " << abs(polygon_area_1) << std::endl;
+  outf << "area: " << abs(polygon_area_2) << std::endl;
+  outf << "ratio initial: " << abs(polygon_area_1)/abs(convex_hull_area) << std::endl;
+  outf << "ratio: " << abs(polygon_area_2)/abs(convex_hull_area) << std::endl;
 }
