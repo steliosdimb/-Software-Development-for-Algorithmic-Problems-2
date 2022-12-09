@@ -6,7 +6,6 @@
 #include <CGAL/Search_traits_2.h>
   #include <sys/types.h>
 #include <CGAL/convex_hull_2.h>
-#include <CGAL/draw_polygon_2.h>
 
 #include <time.h>
 
