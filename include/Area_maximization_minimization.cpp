@@ -85,7 +85,7 @@ int create_polygon(char *arg)
   how_many_points = stoi(input_name);
 
   std::string line;
-  std::ifstream poly("test_output.txt");
+  std::ifstream poly("output_polygon.txt");
   std::getline(poly, line); // skip first line
   i = 0;
   char *temp;
@@ -109,7 +109,7 @@ int create_polygon(char *arg)
 }
 Polygon_2 create_polygon_2(Points subset_polygon_points)
 {
-  std::ofstream ofs("test_output1.txt"); // create a new text file for its subset polygon
+  std::ofstream ofs("output_polygon_subdiv.txt"); // create a new text file for its subset polygon
   if (flagalgo == 2)
   {
     convex_hull_fun(subset_polygon_points, ofs); // create a polygon using the selected method with subset points
@@ -120,7 +120,7 @@ Polygon_2 create_polygon_2(Points subset_polygon_points)
   }
   std::ifstream ifs;
   std::string s;
-  ifs.open("test_output1.txt"); // open the file we wrote the polygon so we can read the points
+  ifs.open("output_polygon_subdiv.txt"); // open the file we wrote the polygon so we can read the points
   getline(ifs, s);              // skip first line
   int i;
   int pos;
