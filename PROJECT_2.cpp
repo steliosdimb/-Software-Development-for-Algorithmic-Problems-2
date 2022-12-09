@@ -92,8 +92,7 @@ int main(int argc, char *argv[])
     outf.open(argv[4]);
     if (flag_algo == 1)
     { // if algorithm is local search
-
-        local_search();
+        local_search(flag_min_max,outf);
     }
     else if (flag_algo == 2)
     { // if algorithm is simulated_annealing
